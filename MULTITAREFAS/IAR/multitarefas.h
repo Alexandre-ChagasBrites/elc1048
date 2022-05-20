@@ -14,10 +14,10 @@
 /* macros de configuracao */
 
 /* numero de tarefas */
-#define NUMERO_DE_TAREFAS	4
+#define NUMERO_DE_TAREFAS	5
 
 /* número de prioridades/tarefas */
-#define PRIORIDADE_MAXIMA   4
+#define PRIORIDADE_MAXIMA   5
 
 /* frequencia de clock da CPU */
 #define cfg_CPU_CLOCK_HZ 	48000000
@@ -49,6 +49,8 @@ extern  uint8_t		proxima_tarefa;
 extern  tcb_t		TCB[NUMERO_DE_TAREFAS+1];
 extern  stackptr_t	ponteiro_de_pilha;
 extern  prioridade_t Prioridades[PRIORIDADE_MAXIMA+1];
+
+extern tick_t contador_marcas;
 
 /**
 * \struct semaforo_t

@@ -11,35 +11,37 @@ extern uint32_t	   SP;
 
 stackptr_t CriaContexto(tarefa_t endereco_tarefa, stackptr_t ptr_pilha)
 {
+        #define PUSH(pilha, valor) (*(--pilha) = valor)
 	#define INITIAL_XPSR		0x01000000
 	
 	uint32_t reg_val;
-	*(--ptr_pilha) = INITIAL_XPSR;     /* xPSR */
-	*(--ptr_pilha) = (uint32_t)endereco_tarefa;  /* R15 */
-	*(--ptr_pilha) = 0x00;				   /* R14 */
+	PUSH(ptr_pilha, INITIAL_XPSR);     /* xPSR */
+	PUSH(ptr_pilha, (uint32_t)endereco_tarefa);  /* R15 */
+	PUSH(ptr_pilha, 0x00);				   /* R14 */
 	
-	*(--ptr_pilha) = 0x12;			   /* R12 */
+	PUSH(ptr_pilha, 0x12);			   /* R12 */
 	
 	for(reg_val = 3; reg_val > 0; reg_val--)
 	{
-		*(--ptr_pilha) = reg_val;  /* R3, R2, R1 */
+		PUSH(ptr_pilha, reg_val);  /* R3, R2, R1 */
 	}
 	
-	*(--ptr_pilha) = 0;		   /* R0 */
+	PUSH(ptr_pilha, 0);	   /* R0 */
 	
 	for(reg_val = 7; reg_val >= 4; reg_val--)
 	{
-		*(--ptr_pilha) = reg_val;  /* R7, R6, R5, R4 */
+		PUSH(ptr_pilha, reg_val);  /* R7, R6, R5, R4 */
 	}
 	
 	for(reg_val = 11; reg_val >= 8; reg_val--)
 	{
-		*(--ptr_pilha) = reg_val;  /* R11, R10, R9, R8 */
+		PUSH(ptr_pilha, reg_val);  /* R11, R10, R9, R8 */
 	}
 	
 	return ptr_pilha;
-
-	
+        
+        #undef PUSH
+        #undef INITIAL_XPSR
 }
 
 /* Codigo dependente de hardware usado para 

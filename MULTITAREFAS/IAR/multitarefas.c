@@ -13,7 +13,7 @@ prioridade_t       Prioridades[PRIORIDADE_MAXIMA+1];   /* vetor com as prioridad
 uint32_t	   SP;
 
 /* variavel auxiliar para guardar o numero de marcas de tempo */
-static tick_t contador_marcas = 0;
+tick_t contador_marcas = 0;
 
 static uint8_t numero_tarefas = 0;
 
@@ -119,7 +119,7 @@ void tarefa_ociosa(void)
 	
 	for(;;)
 	{		
-		#if 1
+		#if 1                                                   /* para o uso como sistema cooperativo */
 			REG_ATOMICA_INICIO();
 			TrocaContexto();				/* tarefa atual solicita troca de contexto */
 			REG_ATOMICA_FIM();
