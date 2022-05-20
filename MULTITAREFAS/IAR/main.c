@@ -106,7 +106,7 @@ void tarefa_4(void)
 		c = contador_marcas;
                 TarefaEspera(100);
                 /* Calcula quanto tempo a espera durou */
-                /* Em um sistema cooperativo este valor pode ser maior que o de espera pois depende das outras tarefas suspenderem */
+                /* Em um sistema preemptivo este valor deve ser igual ao de espera já que os contextos são trocados assim que ocorre uma interrupção */
                 d = contador_marcas - c;
 	}
 }
