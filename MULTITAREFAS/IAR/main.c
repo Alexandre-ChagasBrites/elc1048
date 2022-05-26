@@ -16,8 +16,6 @@ void tarefa_4(void);
  */
 #define TAM_PILHA_1		(TAM_MINIMO_PILHA + 24)
 #define TAM_PILHA_2		(TAM_MINIMO_PILHA + 24)
-#define TAM_PILHA_3		(TAM_MINIMO_PILHA + 24)
-#define TAM_PILHA_4		(TAM_MINIMO_PILHA + 24)
 #define TAM_PILHA_OCIOSA	(TAM_MINIMO_PILHA + 24)
 
 /*
@@ -25,8 +23,6 @@ void tarefa_4(void);
  */
 uint32_t PILHA_TAREFA_1[TAM_PILHA_1];
 uint32_t PILHA_TAREFA_2[TAM_PILHA_2];
-uint32_t PILHA_TAREFA_3[TAM_PILHA_3];
-uint32_t PILHA_TAREFA_4[TAM_PILHA_4];
 uint32_t PILHA_TAREFA_OCIOSA[TAM_PILHA_OCIOSA];
 
 /*
@@ -41,10 +37,6 @@ int main(void)
 	CriaTarefa(tarefa_1, "Tarefa 1", PILHA_TAREFA_1, TAM_PILHA_1, 1);
 	
 	CriaTarefa(tarefa_2, "Tarefa 2", PILHA_TAREFA_2, TAM_PILHA_2, 2);
-	
-	CriaTarefa(tarefa_3, "Tarefa 3", PILHA_TAREFA_3, TAM_PILHA_3, 3);
-	
-	CriaTarefa(tarefa_4, "Tarefa 4", PILHA_TAREFA_4, TAM_PILHA_4, 4);
 	
 	/* Cria tarefa ociosa do sistema */
 	CriaTarefa(tarefa_ociosa,"Tarefa ociosa", PILHA_TAREFA_OCIOSA, TAM_PILHA_OCIOSA, 0);
@@ -61,52 +53,57 @@ int main(void)
 	}
 }
 
+#define TAM_BUFFER 32
+uint8_t buffer[TAM_BUFFER];
 
-/* Tarefas de exemplo que usam funcoes para suspender/continuar as tarefas */
+semaforo_t cheio = { .contador = 0, .tarefaEsperando = 0 };
+semaforo_t vazio = { .contador = TAM_BUFFER, .tarefaEsperando = 0 };
+
+typedef struct {
+        uint8_t num;
+} gen_t;
+
+uint8_t gen_valor(gen_t* gen)
+{
+        uint8_t val = gen->num;
+        gen->num = gen->num * 11 + 13;
+        return val;
+}
+
+uint8_t produz()
+{
+        static gen_t gen = { .num = 0 };
+        TarefaEspera(5);
+        return gen_valor(&gen);
+}
+
+void consome(uint8_t valor)
+{
+        TarefaEspera(10);
+}
+
+/* Produtor */
 void tarefa_1(void)
 {
-	volatile uint16_t a = 0;
+	volatile uint16_t f = 0;
 	for(;;)
 	{
-		a++;
-                /* Alterna entre continuar a tarefa 2 e 3 */
-                TarefaContinua(2 + (a % 2));
+		SemaforoAguarda(&vazio);
+                buffer[f] = produz();
+                f = (f + 1) % TAM_BUFFER;
+                SemaforoLibera(&cheio);
 	}
 }
 
+/* Consumidor */
 void tarefa_2(void)
 {
-	volatile uint16_t b = 0;
+	volatile uint16_t i = 0;
 	for(;;)
 	{
-		b++;
-		TarefaSuspende(2);	
-	}
-}
-
-void tarefa_3(void)
-{
-	volatile uint16_t c = 0;
-        volatile uint32_t i;
-	for(;;)
-	{
-		c++;
-                TarefaSuspende(3);
-                /* Loop para consumir ciclos de CPU */
-                for (i = 0; i < 1000000; i++) {}
-	}
-}
-
-void tarefa_4(void)
-{
-	volatile uint16_t c = 0;
-        volatile uint16_t d;
-	for(;;)
-	{
-		c = contador_marcas;
-                TarefaEspera(100);
-                /* Calcula quanto tempo a espera durou */
-                /* Em um sistema preemptivo este valor deve ser igual ao de espera já que os contextos são trocados assim que ocorre uma interrupção */
-                d = contador_marcas - c;
+                SemaforoAguarda(&cheio);
+                consome(buffer[i]);
+                i = (i + 1) % TAM_BUFFER;
+                SemaforoLibera(&vazio);
 	}
 }
