@@ -1,9 +1,9 @@
 /**
  * \file
  *
- * \brief SAM External Interrupt Driver Configuration Header
+ * \brief SAM External Interrupt Driver
  *
- * Copyright (c) 2013-2018 Microchip Technology Inc. and its subsidiaries.
+ * Copyright (c) 2012-2018 Microchip Technology Inc. and its subsidiaries.
  *
  * \asf_license_start
  *
@@ -33,23 +33,66 @@
 /*
  * Support and FAQ: visit <a href="https://www.microchip.com/support/">Microchip Support</a>
  */
-#ifndef CONF_EXTINT_H_INCLUDED
-#define CONF_EXTINT_H_INCLUDED
+#ifndef EXTINT_CALLBACK_H_INCLUDED
+#define EXTINT_CALLBACK_H_INCLUDED
 
-/** 
- * Define which clock type is used to clock EIC peripheral:
- *     - EXTINT_CLK_GCLK
- *     - EXTINT_CLK_ULP32K
- *
- * EXTINT_CLK_ULP32K is available for SAM L21/C21.
- */
-#define EXTINT_CLOCK_SELECTION   EXTINT_CLK_GCLK
- 
+#include <compiler.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
- * Define which GCLK source is used when selecting EXTINT_CLK_GCLK type.
+ * \addtogroup asfdoc_sam0_extint_group
+ *
+ * @{
  */
-#if (EXTINT_CLOCK_SELECTION == EXTINT_CLK_GCLK)
-#  define EXTINT_CLOCK_SOURCE      GCLK_GENERATOR_0
+
+/** \name Callback Configuration and Initialization
+ * @{
+ */
+
+/** Enum for the possible callback types for the EXTINT module. */
+enum extint_callback_type
+{
+	/** Callback type for when an external interrupt detects the configured
+	 *  channel criteria (i.e. edge or level detection)
+	 */
+	EXTINT_CALLBACK_TYPE_DETECT,
+};
+
+enum status_code extint_register_callback(
+	const extint_callback_t callback,
+	const uint8_t channel,
+	const enum extint_callback_type type);
+
+enum status_code extint_unregister_callback(
+	const extint_callback_t callback,
+	const uint8_t channel,
+	const enum extint_callback_type type);
+
+uint8_t extint_get_current_channel(void);
+
+/** @} */
+
+/** \name Callback Enabling and Disabling (Channel)
+ * @{
+ */
+
+enum status_code extint_chan_enable_callback(
+	const uint8_t channel,
+	const enum extint_callback_type type);
+
+enum status_code extint_chan_disable_callback(
+	const uint8_t channel,
+	const enum extint_callback_type type);
+
+/** @} */
+
+/** @} */
+
+#ifdef __cplusplus
+}
 #endif
 
 #endif

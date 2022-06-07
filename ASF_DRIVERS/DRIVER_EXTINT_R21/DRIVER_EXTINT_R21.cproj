@@ -32,14 +32,14 @@
       <framework-data>
   <options>
     <option id="common.boards" value="Add" config="" content-id="Atmel.ASF" />
-    <option id="common.utils" value="Add" config="" content-id="Atmel.ASF" />
-    <option id="sam0.drivers.extint" value="Add" config="polled" content-id="Atmel.ASF" />
-    <option id="sam0.drivers.extint.quick_start_polled" value="Add" config="" content-id="Atmel.ASF" />
+    <option id="sam0.drivers.extint" value="Add" config="callback" content-id="Atmel.ASF" />
     <option id="sam0.drivers.port" value="Add" config="" content-id="Atmel.ASF" />
+    <option id="common.utils" value="Add" config="" content-id="Atmel.ASF" />
+    <option id="sam0.drivers.extint.quick_start_polled" value="Add" config="" content-id="Atmel.ASF" />
     <option id="sam0.utils.cmsis.samr21.source.template" value="Add" config="" content-id="Atmel.ASF" />
   </options>
   <configurations>
-    <configuration key="config.sam0.drivers.extint" value="polled" default="polled" content-id="Atmel.ASF" />
+    <configuration key="config.sam0.drivers.extint" value="callback" default="polled" content-id="Atmel.ASF" />
   </configurations>
   <files>
     <file path="src/ASF/common/boards/board.h" framework="" version="" source="common/boards/board.h" changed="False" content-id="Atmel.ASF" />
@@ -54,7 +54,7 @@
     <file path="src/qs_extint_basic.c" framework="" version="" source="sam0/drivers/extint/quick_start_polled/qs_extint_basic.c" changed="False" content-id="Atmel.ASF" />
     <file path="src/config/conf_board.h" framework="" version="" source="sam0/drivers/extint/quick_start_polled/samr21_xplained_pro/conf_board.h" changed="False" content-id="Atmel.ASF" />
     <file path="src/config/conf_clocks.h" framework="" version="" source="sam0/drivers/extint/quick_start_polled/samr21_xplained_pro/conf_clocks.h" changed="False" content-id="Atmel.ASF" />
-    <file path="src/config/conf_extint.h" framework="" version="" source="sam0/drivers/extint/quick_start_polled/samr21_xplained_pro/conf_extint.h" changed="False" content-id="Atmel.ASF" />
+    <file path="src/Config/conf_extint.h" framework="" version="3.49.1" source="sam0\drivers\extint\module_config\conf_extint.h" changed="False" content-id="Atmel.ASF" />
     <file path="src/ASF/sam0/drivers/port/port.c" framework="" version="" source="sam0/drivers/port/port.c" changed="False" content-id="Atmel.ASF" />
     <file path="src/ASF/sam0/drivers/port/port.h" framework="" version="" source="sam0/drivers/port/port.h" changed="False" content-id="Atmel.ASF" />
     <file path="src/ASF/sam0/drivers/port/quick_start/qs_port_basic.h" framework="" version="" source="sam0/drivers/port/quick_start/qs_port_basic.h" changed="False" content-id="Atmel.ASF" />
@@ -168,6 +168,8 @@
     <file path="src/ASF/thirdparty/CMSIS/Lib/license.txt" framework="" version="" source="thirdparty/CMSIS/Lib/license.txt" changed="False" content-id="Atmel.ASF" />
     <file path="src/ASF/thirdparty/CMSIS/README.txt" framework="" version="" source="thirdparty/CMSIS/README.txt" changed="False" content-id="Atmel.ASF" />
     <file path="src/ASF/thirdparty/CMSIS/license.txt" framework="" version="" source="thirdparty/CMSIS/license.txt" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/sam0/drivers/extint/extint_callback.c" framework="" version="3.49.1" source="sam0\drivers\extint\extint_callback.c" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/sam0/drivers/extint/extint_callback.h" framework="" version="3.49.1" source="sam0\drivers\extint\extint_callback.h" changed="False" content-id="Atmel.ASF" />
   </files>
   <documentation help="" />
   <offline-documentation help="" />
@@ -192,8 +194,8 @@
       <Value>NDEBUG</Value>
       <Value>__SAMR21G18A__</Value>
       <Value>BOARD=SAMR21_XPLAINED_PRO</Value>
-      <Value>EXTINT_CALLBACK_MODE=false</Value>
       <Value>ARM_MATH_CM0PLUS=true</Value>
+      <Value>EXTINT_CALLBACK_MODE=true</Value>
     </ListValues>
   </armgcc.compiler.symbols.DefSymbols>
   <armgcc.compiler.directories.IncludePaths>
@@ -273,7 +275,7 @@
       <Value>../src/config</Value>
     </ListValues>
   </armgcc.assembler.general.IncludePaths>
-  <armgcc.preprocessingassembler.general.AssemblerFlags>-DARM_MATH_CM0PLUS=true -DBOARD=SAMR21_XPLAINED_PRO -DEXTINT_CALLBACK_MODE=false -D__SAMR21G18A__</armgcc.preprocessingassembler.general.AssemblerFlags>
+  <armgcc.preprocessingassembler.general.AssemblerFlags>-DARM_MATH_CM0PLUS=true -DBOARD=SAMR21_XPLAINED_PRO -D__SAMR21G18A__ -DEXTINT_CALLBACK_MODE=true</armgcc.preprocessingassembler.general.AssemblerFlags>
   <armgcc.preprocessingassembler.general.IncludePaths>
     <ListValues>
       <Value>../src/ASF/sam0/boards</Value>
@@ -319,8 +321,8 @@
       <Value>DEBUG</Value>
       <Value>__SAMR21G18A__</Value>
       <Value>BOARD=SAMR21_XPLAINED_PRO</Value>
-      <Value>EXTINT_CALLBACK_MODE=false</Value>
       <Value>ARM_MATH_CM0PLUS=true</Value>
+      <Value>EXTINT_CALLBACK_MODE=true</Value>
     </ListValues>
   </armgcc.compiler.symbols.DefSymbols>
   <armgcc.compiler.directories.IncludePaths>
@@ -402,7 +404,7 @@
     </ListValues>
   </armgcc.assembler.general.IncludePaths>
   <armgcc.assembler.debugging.DebugLevel>Default (-g)</armgcc.assembler.debugging.DebugLevel>
-  <armgcc.preprocessingassembler.general.AssemblerFlags>-DARM_MATH_CM0PLUS=true -DBOARD=SAMR21_XPLAINED_PRO -DEXTINT_CALLBACK_MODE=false -D__SAMR21G18A__</armgcc.preprocessingassembler.general.AssemblerFlags>
+  <armgcc.preprocessingassembler.general.AssemblerFlags>-DARM_MATH_CM0PLUS=true -DBOARD=SAMR21_XPLAINED_PRO -D__SAMR21G18A__ -DEXTINT_CALLBACK_MODE=true</armgcc.preprocessingassembler.general.AssemblerFlags>
   <armgcc.preprocessingassembler.general.IncludePaths>
     <ListValues>
       <Value>../src/ASF/sam0/boards</Value>
@@ -823,6 +825,12 @@
     <Compile Include="src\ASF\sam0\boards\samr21_xplained_pro\board_init.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\ASF\sam0\drivers\extint\extint_callback.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <None Include="src\ASF\sam0\drivers\extint\extint_callback.h">
+      <SubType>compile</SubType>
+    </None>
     <Compile Include="src\ASF\sam0\drivers\extint\extint_sam_d_r_h\extint.c">
       <SubType>compile</SubType>
     </Compile>
