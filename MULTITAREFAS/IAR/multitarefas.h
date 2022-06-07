@@ -14,10 +14,10 @@
 /* macros de configuracao */
 
 /* numero de tarefas */
-#define NUMERO_DE_TAREFAS	3
+#define NUMERO_DE_TAREFAS	7
 
 /* número de prioridades/tarefas */
-#define PRIORIDADE_MAXIMA   3
+#define PRIORIDADE_MAXIMA   7
 
 /* frequencia de clock da CPU */
 #define cfg_CPU_CLOCK_HZ 	48000000
@@ -69,7 +69,7 @@ uint8_t escalonador(void);
 
 void TrocaContextoDasTarefas(void);
 uint32_t * CriaContexto(tarefa_t endereco_tarefa, uint32_t* ptr_pilha);
-void CriaTarefa(tarefa_t p, const char * nome, stackptr_t pilha, uint16_t tamanho, prioridade_t prioridade);
+void CriaTarefa(tarefa_t p, const char * nome, stackptr_t pilha, uint16_t tamanho, estado_tarefa_t estado, prioridade_t prioridade);
 void IniciaMultitarefas(void);
 void ConfiguraMarcaTempo(void);
 void ExecutaMarcaDeTempo(void);

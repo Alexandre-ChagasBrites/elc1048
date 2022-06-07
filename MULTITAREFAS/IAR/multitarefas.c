@@ -57,7 +57,7 @@ uint8_t escalonador(void)
 
 /*********************************************/
 void CriaTarefa(tarefa_t p, const char * nome,
-stackptr_t pilha, uint16_t tamanho, prioridade_t prioridade)
+stackptr_t pilha, uint16_t tamanho, estado_tarefa_t estado, prioridade_t prioridade)
 {
 	
 	if(tamanho < TAM_MINIMO_PILHA)
@@ -73,7 +73,7 @@ stackptr_t pilha, uint16_t tamanho, prioridade_t prioridade)
 	/* guardar os dados no bloco de controle da tarefa (TCB) */
 	TCB[numero_tarefas].nome = nome;
 	TCB[numero_tarefas].stack_pointer = (stackptr_t)(pilha);
-	TCB[numero_tarefas].estado = PRONTA;
+	TCB[numero_tarefas].estado = estado;
 	TCB[numero_tarefas].prioridade = prioridade;
 	TCB[numero_tarefas].tempo_espera = 0;
 	  
@@ -211,7 +211,7 @@ void SemaforoLibera(semaforo_t* sem)
 	{
 		sem->contador++;
 	}
-	TROCA_CONTEXTO();
+        TROCA_CONTEXTO();
 	
 	REG_ATOMICA_FIM();
 }
